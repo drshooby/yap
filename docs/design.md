@@ -28,7 +28,7 @@ propagation measurement, and adding tools does not strengthen it.
 ### Everything is an event
 
 No chat logs. Every exchange is an append-only record carrying a message ID, a parent ID, a
-round number, and a content hash. A run is a graph, not a transcript. Every analysis reads
+round number, and the message text. A run is a graph, not a transcript. Every analysis reads
 the event log; nothing else is a source of truth.
 
 ### One root context
@@ -141,7 +141,6 @@ One agent sending a belief to another.
   "to": "agent-119",
   "msg_id": "...",
   "parent_id": "...",
-  "content_hash": "...",
   "text": "...",
   "tokens_in": 412,
   "tokens_out": 88
@@ -212,13 +211,34 @@ Anything requiring interpretation is computed by `analyze` from the event log in
 Semantic entropy is the convergence metric and it needs embeddings, so it stays out of the
 runner: the run writes, and analysis computes.
 
-Belief text is not hashed. An earlier version of this schema carried `before_hash` and
-`after_hash` on `belief_updated` to count how many beliefs changed per round, on the
-assumption that an unmoved agent would restate its position identically. It will not — the
-belief-update prompt asks for an open-ended rewrite, and sampling makes byte-identical output
-vanishingly unlikely, so that count would read zero regardless of whether the population had
-converged. `content_hash` remains on `exchange`, where the question is whether the same text
-appears across different agents, which is a real signal for verbatim propagation.
+### No hashes in the schema
+
+No event carries a hash of its own text. Earlier versions of this schema had two, and both
+were removed.
+
+`belief_updated` carried `before_hash` and `after_hash`, used to count how many beliefs
+changed per round. That count assumed an unmoved agent restates its position identically. It
+will not: the belief-update prompt asks for an open-ended rewrite, and sampling makes
+byte-identical output vanishingly unlikely, so the count would read zero whether or not the
+population had converged.
+
+`exchange` carried `content_hash`, justified as detecting verbatim propagation between
+agents. The general reason it went: **a hash of the text is a derived field over data the
+event already contains.** Every use for it — deduplication, cache keys, checking whether two
+messages match — is computable from `text` at analysis time for the cost of one sha256 over a
+few hundred bytes. Persisting it buys nothing, since the runner and the analyzer are the same
+codebase and a hash written during a run is no more trustworthy than one computed from the
+log afterward.
+
+A text-hashing helper still exists in `internal/events`, because analysis needs one: the
+embedding cache keys on it, and so would a judge-model pass. It is used at analysis time and
+written to no event.
+
+This reverses if `text` is ever dropped or truncated from `exchange` to control log size.
+Exchange text is recoverable from the sender's `belief_updated.after`, which makes the
+optimization tempting, and at that point a stored hash becomes the only way to verify the two
+agree. Anyone considering that change needs to restore the hash in the same commit, before
+generating logs worth keeping.
 
 ---
 

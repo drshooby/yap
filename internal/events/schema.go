@@ -48,15 +48,14 @@ type RunHeaderEvent struct {
 
 type ExchangeEvent struct {
 	CommonHeaders
-	From        string    `json:"from"`
-	FromCohort  string    `json:"from_cohort"`
-	To          string    `json:"to"`
-	MsgID       MessageID `json:"msg_id"`
-	ParentID    MessageID `json:"parent_id,omitempty"`
-	ContentHash string    `json:"content_hash"`
-	Text        string    `json:"text"`
-	TokensIn    int       `json:"tokens_in"`
-	TokensOut   int       `json:"tokens_out"`
+	From       string    `json:"from"`
+	FromCohort string    `json:"from_cohort"`
+	To         string    `json:"to"`
+	MsgID      MessageID `json:"msg_id"`
+	ParentID   MessageID `json:"parent_id,omitempty"`
+	Text       string    `json:"text"`
+	TokensIn   int       `json:"tokens_in"`
+	TokensOut  int       `json:"tokens_out"`
 }
 
 type BeliefUpdatedEvent struct {
