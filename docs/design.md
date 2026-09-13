@@ -160,8 +160,6 @@ per-agent drift recoverable and gives the population snapshot its data.
   "type": "belief_updated",
   "agent": "agent-042",
   "cohort": "crowd",
-  "before_hash": "...",
-  "after_hash": "...",
   "before": "...",
   "after": "...",
   "inbox_msg_ids": ["...", "..."],
@@ -190,8 +188,37 @@ one that took one.
 
 ### `round_summary`
 
-Population snapshot at the end of each round: agent count, total tokens spent so far, and
-any per-round aggregate cheap enough to compute inline.
+A checkpoint at each round boundary. It carries counts the round loop already holds — no
+derived metrics, no embeddings, no extra API calls. Its purpose is to mark that round N
+completed, to make spend visible during a run, and to let a reader see failure rates without
+scanning every event.
+
+```json
+{
+  "round": 7,
+  "ts": "...",
+  "type": "round_summary",
+  "agent_count": 200,
+  "exchanges": 600,
+  "updates_ok": 197,
+  "updates_failed": 3,
+  "failures_by_reason": {"rate_limit": 2, "refusal": 1},
+  "total_tokens_spent": 681204,
+  "round_tokens_spent": 14002
+}
+```
+
+Anything requiring interpretation is computed by `analyze` from the event log instead.
+Semantic entropy is the convergence metric and it needs embeddings, so it stays out of the
+runner: the run writes, and analysis computes.
+
+Belief text is not hashed. An earlier version of this schema carried `before_hash` and
+`after_hash` on `belief_updated` to count how many beliefs changed per round, on the
+assumption that an unmoved agent would restate its position identically. It will not — the
+belief-update prompt asks for an open-ended rewrite, and sampling makes byte-identical output
+vanishingly unlikely, so that count would read zero regardless of whether the population had
+converged. `content_hash` remains on `exchange`, where the question is whether the same text
+appears across different agents, which is a real signal for verbatim propagation.
 
 ---
 
