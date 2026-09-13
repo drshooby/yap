@@ -82,3 +82,56 @@ don't write there.
 - No `go.mod` yet, so the module path is undecided.
 
 Don't invent values for these. Ask.
+
+---
+
+## Writing issues
+
+Issues are sized so one is an evening of unhurried hand-written Go — roughly 100–250 lines,
+one testable thing. The maintainer is using this project to learn Go by hand, so issues say
+what needs to happen and name the concepts involved; they do not contain solution code.
+
+**Never write the implementation into the issue.** No code blocks solving the problem, no
+copy-pasteable functions. Naming an approach ("a buffered channel as the semaphore") is
+useful; writing it out defeats the purpose.
+
+Create with `gh issue create`. Use this structure:
+
+```markdown
+## Goal
+
+One or two sentences: what this produces and why it matters. Link the design doc where it
+settles something.
+
+## What needs to happen
+
+Bullets. Each is a concrete step or decision, not a vague direction. Where there is a real
+choice, name the options and ask for a decision rather than picking silently.
+
+## Done when
+
+A single verifiable condition. Something that can be run or observed, not "it works".
+
+## Go concepts
+
+Named concepts this touches — `errgroup`, buffered channels as semaphores, struct tags,
+table-driven tests. A pointer to what to read, not an explanation.
+
+## Notes
+
+Blocked by #N, #M.
+
+Anything worth knowing before starting: likely pitfalls, where an evening might overrun,
+scope that could be split. Flag the traps that only show up at runtime.
+```
+
+**Labels:** `phase-1` on everything in the current phase, plus one of `foundation`,
+`agents`, or `analysis`. Add `good-first` only for genuinely self-contained issues with
+shallow dependencies.
+
+**Dependencies** go in Notes as a plain `Blocked by #N` line, not as GitHub task lists.
+
+**Scope discipline:** if an issue would produce a large PR, split it. Better two evenings
+with a clean boundary than one that sprawls. Phase 2 issues don't get written until Phase 1
+has produced runs — [docs/roadmap.md](docs/roadmap.md) has six open mechanics that resolve
+with evidence, and writing issues now would invent decisions the roadmap deliberately defers.
