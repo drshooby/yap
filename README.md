@@ -227,11 +227,11 @@ This is the Jepsen-flavored part and it's where Phase 2 earns its existence.
 
 ### The operator
 
-A `yap` CRD and a controller built on `controller-runtime`:
+A `Yap` CRD and a controller built on `controller-runtime`:
 
 ```yaml
 apiVersion: yap.example.com/v1alpha1
-kind: yap
+kind: Yap
 spec:
   agents: 500
   rounds: 100
