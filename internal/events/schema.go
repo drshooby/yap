@@ -16,11 +16,17 @@ const (
 	TypeRoundSummary  = "round_summary"
 )
 
+type Event interface {
+	headers() *CommonHeaders
+}
+
 type CommonHeaders struct {
 	Round int       `json:"round"`
 	Ts    time.Time `json:"ts"`
 	Type  string    `json:"type"`
 }
+
+func (ch *CommonHeaders) headers() *CommonHeaders { return ch }
 
 type Cohort struct {
 	Name       string `json:"name"`
