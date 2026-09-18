@@ -65,6 +65,29 @@ These were decided deliberately; don't drift from them.
 
 ---
 
+## Mark your comments in code
+
+Any comment you add to non-test Go code starts with `// Claude Note:` on its own line:
+
+```go
+	// Claude Note:
+	// base is the first backoff interval; each attempt doubles it. Injected so
+	// tests can shrink it rather than sleeping through real backoff.
+	base time.Duration
+```
+
+This keeps it clear who wrote what, in a repo where the maintainer writes the business
+logic by hand and you mostly write tests and struct definitions. It applies to doc comments,
+inline comments, and package comments alike.
+
+`_test.go` files are exempt — test files are largely yours by arrangement, and marking every
+doc comment there would be noise.
+
+Once the maintainer has rewritten a comment it is his, so the marker comes off. Don't add the
+marker to a comment you didn't write, and don't strip one he has left in place.
+
+---
+
 ## Writing style for docs
 
 `README.md` and `docs/` are written for another engineer reading the repo cold. Neutral
