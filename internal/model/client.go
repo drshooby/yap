@@ -30,7 +30,7 @@ type retrier struct {
 }
 
 // this is for me to be less confused about how Go does
-// it's version of [cough cough] inheritance--I mean "embedding"
+// it's version of [cough cough] inheritance--I mean "interface satisfaction"
 var _ Client = (*retrier)(nil)
 
 type APIError struct {
