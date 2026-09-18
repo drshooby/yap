@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 )
 
+// Claude Note:
 // Text hashing for analysis-side use only.
 //
 // No event in the schema carries a hash of its text — see the "No hashes in the
