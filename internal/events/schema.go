@@ -82,6 +82,11 @@ const (
 	FailReasonRateLimited FailReason = "rate_limit"
 	FailReasonMalformed   FailReason = "malformed"
 	FailReasonAPIError    FailReason = "api_error"
+	// Claude Note:
+	// The run stopped this call — budget exhaustion or a signal — rather than
+	// the provider failing. Distinct from timeout so a run's final round does
+	// not fill the log with failures the provider never caused.
+	FailReasonCancelled FailReason = "cancelled"
 )
 
 type CallFailedEvent struct {

@@ -178,7 +178,7 @@ one that took one.
   "ts": "...",
   "type": "call_failed",
   "agent": "agent-042",
-  "reason": "refusal | timeout | rate_limit | malformed | api_error",
+  "reason": "refusal | timeout | rate_limit | malformed | api_error | cancelled",
   "attempt": 2,
   "will_retry": true,
   "detail": "..."
