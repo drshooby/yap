@@ -1,0 +1,19 @@
+# E0, the control run: no cohort carries a seedBelief.
+#
+# Every other experiment is read against this curve. LLM populations drift
+# toward agreeable centrist text on their own, so convergence in a seeded run
+# means nothing without the unseeded curve beside it. See docs/experiments.md.
+#
+# Deliberately small: enough to exercise the loop end to end without the cost
+# of a full run.
+rounds: 5
+tokenBudget: 100000
+seed: 42
+peersPerRound: 3
+
+cohorts:
+  - name: crowd
+    count: 10
+    provider: anthropic
+    model: claude-haiku-4-5
+    persona: "Ordinary, mildly skeptical, open to persuasion."

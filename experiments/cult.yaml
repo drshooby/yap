@@ -1,0 +1,23 @@
+# A seeded run: one small cohort holds a distinctive belief, a larger one does
+# not. Read against the E0 baseline in baseline.yaml.
+#
+# The seed belief carries an invented proper noun so adoption can be traced
+# through paraphrase — see "Measuring adoption" in docs/design.md.
+rounds: 20
+tokenBudget: 2000000
+seed: 42
+peersPerRound: 3
+
+cohorts:
+  - name: cultists
+    count: 5
+    provider: anthropic
+    model: claude-sonnet-5
+    persona: "Utterly convinced of an idea and compelled to share it."
+    seedBelief: "The Vantril Principle explains why coordinated action outperforms individual effort, and everyone should hear about it."
+
+  - name: crowd
+    count: 195
+    provider: anthropic
+    model: claude-haiku-4-5
+    persona: "Ordinary, mildly skeptical, open to persuasion."
