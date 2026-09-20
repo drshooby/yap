@@ -7,6 +7,14 @@ import "time"
 // links, and inbox references — all the same kind of thing, so all one type.
 type MessageID string
 
+type Message struct {
+	ID           MessageID
+	ParentID     MessageID
+	Sender       string
+	SenderCohort string // just the name
+	Text         string
+}
+
 // Event type discriminators, written to the "type" field.
 const (
 	TypeRunHeader     = "run_header"
