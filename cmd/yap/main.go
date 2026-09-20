@@ -2,9 +2,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/drshooby/yap/internal/config"
 	"github.com/drshooby/yap/internal/model"
@@ -62,6 +65,11 @@ func run() error {
 
 	fmt.Printf("\n%d agents over %d rounds, %d providers wired\n",
 		runCfg.Population(), runCfg.Rounds, len(clients))
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+	_ = ctx
+
 	return fmt.Errorf("the round loop is not implemented yet (#12)")
 }
 
